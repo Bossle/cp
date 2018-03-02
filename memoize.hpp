@@ -1,37 +1,23 @@
 #pragma once
-#include <map>
-#include <tuple>
 #include <type_traits>
-#include <unordered_map>
+#include <utility>
 
-// memoize(f, args) takes a function f and its args
-// returns std::pair(isValid, f(args))
-// complexity: O(1) if the function was called before with the same args,
-//   the same as f(args) otherwise
-// TODO: this implementation has an additional O(log(n)) cost
-//   due to the use of std::map instead of std::unordered_map or alternatives
-template<typename F, typename... I, typename O = typename std::result_of<F&&(I&&...)>::type>
-std::pair<bool, O> memoize(F& f, I... args) {
-  using Key = std::tuple<I...>;
-  using Val = std::pair<bool, O>;
-  static std::unordered_map<F*, std::map<Key, Val>> allMemos;
-  auto& memo = allMemos[&f];
-  Key key(args...);
-  auto inserted = memo.emplace(key, Val());
-  Val& val = inserted.first->second;
-  if (inserted.second) {
-    val.first = false;
-    val.second = f(args...);
-    val.first = true;
-  }
-  return val;
-}
-
-// Usage: call MEMOIZE(func, args) at the start of the implementation of func(args)
-// Then subsequent calls to func with the same args will have complexity O(1)
-#define MEMOIZE(func, args...) {\
-  auto p = memoize(func, args);\
+// MEMOIZE can be used to reduce the running time of functions
+// It skips the function's processing if it was called previously with the same arguments
+// It may change function behavior if the function has side effects or uses non-local variables
+// Usage: call MEMOIZE(function, arguments) at the start of the implementation of function(arguments)
+#define MEMOIZE(function, arguments...) {\
+  auto p = memoize(function, arguments);\
   if (p.first)\
     return p.second;\
 }
 
+// memoize(function, arguments) provides the storage logic to MEMOIZE
+// You should probably use MEMOIZE instead.
+// The first return argument denotes a failure in storage,
+//   it is used to prevent infinite loops,
+//   since function calls memoize and memoize may call function
+template<class F, class... I, class O = typename std::result_of<F&&(I...)>::type>
+std::pair<bool, O> memoize(F& f, I... args);
+
+#include "memoize_impl.hpp"
