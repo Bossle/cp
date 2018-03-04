@@ -6,8 +6,8 @@
 // It skips the function's processing if it was called previously with the same arguments
 // It may change function behavior if the function has side effects or uses non-local variables
 // Usage: call MEMOIZE(function, arguments) at the start of the implementation of function(arguments)
-#define MEMOIZE(function, arguments...) {\
-  auto p = memoize(function, arguments);\
+#define MEMOIZE(function, ...) {\
+  auto p = memoize(function, __VA_ARGS__);\
   if (p.first)\
     return p.second;\
 }

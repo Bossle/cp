@@ -17,7 +17,7 @@
 // LOG logs its parameter into cerr
 // This includes value, name, type and location
 // Use LOG({value1, value2, ...}) to log multiple values at once
-#define LOG(v...) (std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeof(v) << " " << #v << " == " << (v) << std::endl)
+#define LOG(...) (std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeof(__VA_ARGS__) << " " << #__VA_ARGS__ << " == " << (__VA_ARGS__) << std::endl)
 
 // typeof is a more human-readable alternative to typeid's name()
 template<class T>
