@@ -14,10 +14,13 @@
 #include <unordered_set>
 #include <vector>
 
-// LOG logs its parameter into cerr
+// FLOG logs __VA_ARGS__ into the std::ostream os
 // This includes value, name, type and location
 // Use LOG({value1, value2, ...}) to log multiple values at once
-#define LOG(...) (std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeof(__VA_ARGS__) << " " << #__VA_ARGS__ << " == " << (__VA_ARGS__) << std::endl)
+#define FLOG(os, ...) (os << __FILE__ << ":" << __LINE__ << ": " << typeof(__VA_ARGS__) << " " << #__VA_ARGS__ << " == " << (__VA_ARGS__) << std::endl)
+
+// LOG applies FLOG to the default STL log, cerr
+#define LOG(...) FLOG(std::cerr, __VA_ARGS__)
 
 // typeof is a more human-readable alternative to typeid's name()
 template<class T>
