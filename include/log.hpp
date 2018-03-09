@@ -17,18 +17,21 @@
 // FLOG logs __VA_ARGS__ into the std::ostream os
 // This includes value, name, type and location
 // Use LOG({value1, value2, ...}) to log multiple values at once
-#define FLOG(os, ...) (os << __FILE__ << ":" << __LINE__ << ": " << typeof(__VA_ARGS__) << " " << #__VA_ARGS__ << " == " << (__VA_ARGS__) << std::endl)
+#define FLOG(os, ...) (os << __FILE__ << ":" << __LINE__ << ": " << libossle::demangledType(__VA_ARGS__) << " " << #__VA_ARGS__ << " == " << (__VA_ARGS__) << std::endl)
 
 // LOG applies FLOG to the default STL log, cerr
 #define LOG(...) FLOG(std::cerr, __VA_ARGS__)
 
-// typeof is a more human-readable alternative to typeid's name()
+namespace libossle {
+
+// demangledType is a more human-readable alternative to typeid's name()
 template<class T>
-std::string typeof(const T&);
+std::string demangledType(const T&);
+
+}  // namespace libossle
 
 // Overloads for operator<< (std::ostream&, const std::container&)
 // These allow LOG to work on all STL container types
-
 template<class T, int N>
 std::ostream& operator<< (std::ostream&, const std::array<T, N>&);
 

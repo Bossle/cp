@@ -7,10 +7,12 @@
 // It may change function behavior if the function has side effects or uses non-local variables
 // Usage: call MEMOIZE(function, arguments) at the start of the implementation of function(arguments)
 #define MEMOIZE(function, ...) {\
-  auto p = memoize(function, __VA_ARGS__);\
+  auto p = libossle::memoize(function, __VA_ARGS__);\
   if (p.first)\
     return p.second;\
 }
+
+namespace libossle {
 
 // memoize(function, arguments) provides the storage logic to MEMOIZE
 // You should probably use MEMOIZE instead.
@@ -19,5 +21,7 @@
 //   since function calls memoize and memoize may call function
 template<class F, class... I, class O = typename std::result_of<F&&(I...)>::type>
 std::pair<bool, O> memoize(F& f, I... args);
+
+}  // namespace libossle
 
 #include "memoize_impl.hpp"

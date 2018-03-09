@@ -2,6 +2,8 @@
 #include <tuple>
 #include <unordered_map>
 
+namespace libossle {
+
 // TODO: this implementation has an additional O(log(n)) cost
 //   due to the use of std::map instead of std::unordered_map or alternatives
 template<class F, class... I, class O = typename std::result_of<F&&(I...)>::type>
@@ -20,4 +22,6 @@ std::pair<bool, O> memoize(F& f, I... args) {
   }
   return val;
 }
+
+}  // namespace libossle
 
