@@ -1,6 +1,6 @@
-bin/
-build/
-lib/
-log/
+/bin/
+/build/
+/lib/
+/log/
 *.gcov
 
