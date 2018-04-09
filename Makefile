@@ -6,8 +6,8 @@ include scripts/base.mk
 include scripts/cpp.mk
 
 clean :
-	-rm -r bin build lib log
-	-rm *.gcov
+	$(RM) -r bin build lib log
+	$(RM) *.gcov
 
 install : lib/libossle.a
 
@@ -23,7 +23,7 @@ test : $(patsubst %.in,log/%_success,$(shell find test -name *.in))
 	echo 'Finished tests'
 
 log/%_success : scripts/runTest.sh bin/$$(*D)/solver_debug bin/$$(*D)/checker_debug $$*.in | $(parentDirs)
-	-$< $*
+	$< $*
 
 bin/%/checker_debug :: | $(parentDirs)
 	$(shell ln -rs scripts/defaultChecker.sh $@)

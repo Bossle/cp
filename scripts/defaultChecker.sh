@@ -1,5 +1,6 @@
 #!/bin/bash
 
-diff $2 -
+cat $1
+diff ${1%.*}.sol -
 exit $?
 
