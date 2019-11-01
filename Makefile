@@ -1,33 +1,15 @@
-.PHONY : all clean gcov install install_debug test
-all : install install_debug test
-	$(MAKE) gcov
+.PHONY : all clean judge
+all : judge
 
 include scripts/base.mk
 include scripts/cpp.mk
 
 clean :
-	$(RM) -r bin build lib log
-	$(RM) *.gcov
+	$(RM) -r bin build log
 
-install : lib/libossle.a
+judge : $(patsubst src/%.cpp,log/%/success,$(shell find src -name *.cpp))
+	echo 'Finished judging'
 
-lib/libossle.a : $(patsubst %.cpp,build/%.o,$(shell find src -name *.cpp)) | $(parentDirs)
-	ar cr $@ $?
-
-install_debug : lib/libossle_debug.a
-
-lib/libossle_debug.a : $(patsubst %.cpp,build/%_debug.o,$(shell find src -name *.cpp)) | $(parentDirs)
-	ar cr $@ $?
-
-test : $(patsubst %.in,log/%_success,$(shell find test -name *.in))
-	echo 'Finished tests'
-
-log/%_success : scripts/runTest.sh bin/$$(*D)/solver_debug bin/$$(*D)/checker_debug $$*.in | $(parentDirs)
-	$< $*
-
-bin/%/checker_debug :: | $(parentDirs)
-	$(shell ln -rs scripts/defaultChecker.sh $@)
-
-gcov : $(shell find build -name *.o)
-	gcov -mpr $^
+log/%/success : scripts/run_judge.sh bin/src/%_debug bin/src/% bin/test/$$(*D)/judge_debug test/$$(*D)/*.in test/$$(*D)/*.sol
+	$< $(*D) $(*F)
 

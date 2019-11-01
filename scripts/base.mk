@@ -1,7 +1,7 @@
 .SECONDARY :
 .SECONDEXPANSION :
 
-parentDirs = $$(dir $$@)
+parentDirs = $$(@D)/
 
 %/ :
 	mkdir -p $@

@@ -1,7 +1,23 @@
+#pragma once
+
 #include <cxxabi.h>
 
-namespace libossle {
-namespace {
+// LOG logs x into stderr
+// This includes value, name, type and location
+#define LOG(x) (cerr << __FILE__ << ":" << __LINE__ << ": " << cpLog::demangledType(x) << " " << #x << " == " << (x) << std::endl)
+
+
+namespace cpLog {
+
+// demangledType is a more human-readable alternative to typeid's name()
+template<class T>
+std::string demangledType(const T& v){
+  int status;
+  char* buffer = abi::__cxa_demangle(typeid(v).name(), NULL, NULL, &status);
+  std::string name(buffer);
+  free(buffer);
+  return name;
+}
 
 // logContainer logs an initializer list-like representation of container
 // Requires container to implement begin() and end()
@@ -29,22 +45,13 @@ std::ostream&>::type logTuple(std::ostream& os, const T& tup) {
   return logTuple<I+1>(os, tup);
 }
 
-}  // namespace
+}  // namespace cpLog
 
-template<typename T>
-std::string demangledType(const T& v) {
-  int status;
-  char* buffer = abi::__cxa_demangle(typeid(v).name(), NULL, NULL, &status);
-  std::string name(buffer);
-  free(buffer);
-  return name;
-}
-
-}  // namespace libossle
-
+// Overloads for operator<< (std::ostream&, const std::container&)
+// These allow LOG to work on all STL container types
 template<class T, std::size_t N>
 std::ostream& operator<< (std::ostream& os, const std::array<T, N>& c) {
-  return libossle::logContainer(os, c);
+  return cpLog::logContainer(os, c);
 }
 
 template<std::size_t N>
@@ -54,76 +61,76 @@ std::ostream& operator<< (std::ostream& os, const std::bitset<N>& b) {
 
 template<class...T>
 std::ostream& operator<< (std::ostream& os, const std::deque<T...>& c) {
-  return libossle::logContainer(os, c);
+  return cpLog::logContainer(os, c);
 }
 
 template<class...T>
 std::ostream& operator<< (std::ostream& os, const std::forward_list<T...>& c) {
-  return libossle::logContainer(os, c);
+  return cpLog::logContainer(os, c);
 }
 
 template<class...T>
 std::ostream& operator<< (std::ostream& os, const std::initializer_list<T...>& c) {
-  return libossle::logContainer(os, c);
+  return cpLog::logContainer(os, c);
 }
 
 template<class...T>
 std::ostream& operator<< (std::ostream& os, const std::list<T...>& c) {
-  return libossle::logContainer(os, c);
+  return cpLog::logContainer(os, c);
 }
 
 template<class...T>
 std::ostream& operator<< (std::ostream& os, const std::map<T...>& c) {
-  return libossle::logContainer(os, c);
+  return cpLog::logContainer(os, c);
 }
 
 template<class...T>
 std::ostream& operator<< (std::ostream& os, const std::multimap<T...>& c) {
-  return libossle::logContainer(os, c);
+  return cpLog::logContainer(os, c);
 }
 
 template<class...T>
 std::ostream& operator<< (std::ostream& os, const std::multiset<T...>& c) {
-  return libossle::logContainer(os, c);
+  return cpLog::logContainer(os, c);
 }
 
 template<class...T>
 std::ostream& operator<< (std::ostream& os, const std::pair<T...>& tup) {
-  return libossle::logTuple(os, tup);
+  return cpLog::logTuple(os, tup);
 }
 
 template<class...T>
 std::ostream& operator<< (std::ostream& os, const std::set<T...>& c) {
-  return libossle::logContainer(os, c);
+  return cpLog::logContainer(os, c);
 }
 
 template<class...T>
 std::ostream& operator<< (std::ostream& os, const std::tuple<T...>& tup) {
-  return libossle::logTuple(os, tup);
+  return cpLog::logTuple(os, tup);
 }
 
 template<class...T>
 std::ostream& operator<< (std::ostream& os, const std::unordered_map<T...>& c) {
-  return libossle::logContainer(os, c);
+  return cpLog::logContainer(os, c);
 }
 
 template<class...T>
 std::ostream& operator<< (std::ostream& os, const std::unordered_multimap<T...>& c) {
-  return libossle::logContainer(os, c);
+  return cpLog::logContainer(os, c);
 }
 
 template<class...T>
 std::ostream& operator<< (std::ostream& os, const std::unordered_multiset<T...>& c) {
-  return libossle::logContainer(os, c);
+  return cpLog::logContainer(os, c);
 }
 
 template<class...T>
 std::ostream& operator<< (std::ostream& os, const std::unordered_set<T...>& c) {
-  return libossle::logContainer(os, c);
+  return cpLog::logContainer(os, c);
 }
 
 template<class...T>
 std::ostream& operator<< (std::ostream& os, const std::vector<T...>& c) {
-  return libossle::logContainer(os, c);
+  return cpLog::logContainer(os, c);
 }
 
