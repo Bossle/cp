@@ -5,7 +5,7 @@ include scripts/base.mk
 include scripts/cpp.mk
 
 clean :
-	$(RM) -r bin build log
+	$(RM) -r bin build dist log
 
 judge : $(patsubst src/%.cpp,log/%/success,$(shell find src -name *.cpp))
 	echo 'Finished judging'
