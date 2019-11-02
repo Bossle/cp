@@ -14,5 +14,12 @@ bin/% : %.cpp build/%.d | $(parentDirs)
 bin/%_debug : %.cpp build/%.d | $(parentDirs)
 	$(CXX) $(CXXFLAGS) $(DEBUGFLAGS) $< -o $@
 
+build/%.cpp : %.cpp build/%.d | $(parentDirs)
+	$(CXX) $(CXXFLAGS) -E -C -fdirectives-only -nostdinc -undef -Iscripts/fake $< -o $@
+
+dist/%.cpp : build/src/%.cpp | $(parentDirs)
+	sed -e '/^# / d' -e '1,/^\/\/ INCLUDE BITS HERE$$/ d' $< |\
+	sed '1i#include <bits\/stdc++.h>' | cat -s > $@
+
 -include $(shell find build -name *.d)
 
