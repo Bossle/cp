@@ -1,6 +1,6 @@
 #include "base.cpp"
 
-void solve() {
+int main() {
   int a, b;
   cin >> a >> b;
   LOG(a); LOG(b);

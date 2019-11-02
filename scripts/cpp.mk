@@ -1,19 +1,18 @@
-CXX = g++
-BASEFLAGS = -g -O2 -std=c++14 #-static
+CXX = g++ -std=c++14
 INCLUDEFLAGS = -Itemplate
 WARNINGFLAGS = -Wall -Wextra -pedantic -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond
-DEBUGFLAGS = -DBOSSLE_DEBUG -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -D_FORTIFY_SOURCE=2 -fsanitize=address -fno-sanitize-recover
-CXXFLAGS = $(BASEFLAGS) $(INCLUDEFLAGS) $(WARNINGFLAGS)
-CXXDEBUGFLAGS = $(CXXFLAGS) $(DEBUGFLAGS)
+DEBUGFLAGS = -Og -ggdb3 -DCP_DEBUG -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -D_FORTIFY_SOURCE=2 -fsanitize=address -fno-sanitize-recover
+RELEASEFLAGS = -static -O2 -fno-optimize-sibling-calls -fno-strict-aliasing -DONLINE_JUDGE -s
+CXXFLAGS = $(INCLUDEFLAGS) $(WARNINGFLAGS)
 
 build/%.d : %.cpp | $(parentDirs)
 	$(CXX) -MM $(CXXFLAGS) $< -MT $@ -MT bin/$* -MT bin/$*_debug -MF $@
 
 bin/% : %.cpp build/%.d | $(parentDirs)
-	$(CXX) $(CXXFLAGS) $< -o $@
+	$(CXX) $(CXXFLAGS) $(RELEASEFLAGS) $< -o $@
 
 bin/%_debug : %.cpp build/%.d | $(parentDirs)
-	$(CXX) $(CXXDEBUGFLAGS) $< -o $@
+	$(CXX) $(CXXFLAGS) $(DEBUGFLAGS) $< -o $@
 
 -include $(shell find build -name *.d)
 

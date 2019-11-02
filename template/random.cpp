@@ -1,3 +1,7 @@
+#pragma once
+
+namespace cp_random {
+
 #ifdef BOSSLE_DEBUG
   const auto seed = 0;
 #else
@@ -7,7 +11,9 @@
   };
 #endif
 
-mt19937 RNG(seed);
+}  // namespace cp_random
+
+mt19937 RNG(cp_random::seed);
 
 // shuffle(v.begin(), v.end(), RNG);
 // uniform_int_distribution<int>(min, max)(RNG);

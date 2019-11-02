@@ -48,7 +48,7 @@ FormatJudge& FormatJudge::operator>>(T& arg) {
   ss >> arg;
   if (!ss) {
     cerr << "Bad output" << endl;
-    cerr << "expected one " << cpLog::demangledType(arg) << endl;
+    cerr << "expected one " << cp_log::demangledType(arg) << endl;
     cerr << "got '" << s << "' ";
     printFilePos(cerr);
     exit(WrongAnswer);

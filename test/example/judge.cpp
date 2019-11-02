@@ -1,10 +1,7 @@
-#include "judge/base.cpp"
-#include "judge/format.cpp"
+#include "judge/judge-base.cpp"
 
-void judge(fstream& fin, fstream& fsol) {
-  FormatJudge fout;
-
-  cout << fin.rdbuf();
+void judge(fstream& fin, fstream& fsol, FormatJudge& fout) {
+  cout << fin.rdbuf() << flush;
 
   int sol;
   fsol >> sol;
@@ -15,7 +12,5 @@ void judge(fstream& fin, fstream& fsol) {
     cerr << "Incorrect answer" << endl;
     exit(WrongAnswer);
   }
-  cerr << "OK" << endl;
-  exit(fout.judge());
 }
 

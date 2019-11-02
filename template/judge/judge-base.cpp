@@ -1,5 +1,6 @@
-#include <bits/stdc++.h>
-using namespace std;
+#pragma once
+
+#include "base.cpp"
 
 enum Verdict {
   Accepted = 0,
@@ -10,7 +11,10 @@ enum Verdict {
   JudgeError = 127
 };
 
-void judge(fstream& fin, fstream& fsol);
+#include "judge/judge-format.cpp"
+
+// judge should exit(Verdict) if it finds any failures
+void judge(fstream& fin, fstream& fsol, FormatJudge& fout);
 
 int main(int argc, const char* argv[]) {
   if (argc != 3) {
@@ -19,6 +23,9 @@ int main(int argc, const char* argv[]) {
   }
   fstream fin(argv[1], ios::in);
   fstream fsol(argv[2], ios::in);
-  judge(fin, fsol);
+  FormatJudge fout;
+  judge(fin, fsol, fout);
+  cerr << "OK" << endl;
+  return fout.judge();
 }
 
