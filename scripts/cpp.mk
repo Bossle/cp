@@ -15,7 +15,7 @@ bin/%_debug : %.cpp build/%.d | $(parentDirs)
 	$(CXX) $(CXXFLAGS) $(DEBUGFLAGS) $< -o $@
 
 build/%.cpp : %.cpp build/%.d | $(parentDirs)
-	$(CXX) $(CXXFLAGS) -E -C -fdirectives-only -nostdinc -undef -Iscripts/fake $< -o $@
+	$(CXX) $(CXXFLAGS) -E -C -fdirectives-only $< -o $@
 
 dist/%.cpp : build/src/%.cpp | $(parentDirs)
 	sed -e '/^# / d' -e '1,/^\/\/ END OF STD HEADERS$$/ d' $< |\

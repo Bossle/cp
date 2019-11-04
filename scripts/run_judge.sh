@@ -7,6 +7,10 @@ if [[ $# != 3 ]]; then
   exit 2
 fi
 
+mkdir -p "log/$1"
+touch "log/$1/$2_judge.log"
+exec > >(tee "log/$1/$2_judge.log") 2>&1
+
 # Returns:
 # 0) Accepted
 # 1) Wrong Answer
@@ -20,11 +24,11 @@ fi
 #   https://github.com/contester/runlib should help
 #   or docker or cgroups+iptables?
 judge() {
-  exec > >(tee /dev/stderr)
+  exec > >(tee >(cat >&2))
   problem="$1"
   attempt="$2"
   test_case="$3"
-  echo "Testing $problem/$attempt against $test_case:"
+  echo "Testing $problem/$attempt against $test_case:" >&2
   mkdir -p "log/$problem/$attempt"
   touch "log/$problem/$attempt/$test_case.in"
   touch "log/$problem/$attempt/$test_case.out"
@@ -62,7 +66,6 @@ for test_case in $(basename -s .in $(find "test/$1/" -name *.in ) ); do
   judgement=$(judge "$1" "$2_debug" "$test_case")
   judge_ret=$?
   if [[ $judge_ret == 3 ]]; then  # TLE, try with release version
-    echo "Testing $1/$2 against $test_case:"
     judgement=$(judge "$1" "$2" "$test_case")
     judge_ret=$?
   fi

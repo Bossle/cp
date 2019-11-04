@@ -11,7 +11,7 @@ using namespace std;
 // #pragma STDC FENV_ACCESS OFF
 // #pragma STDC FP_CONTRACT ON
 // #pragma STDC CX_LIMITED_RANGE ON
-#pragma GCC optimize "O3"
+// #pragma GCC optimize "O3"
 #endif
 
 namespace cp_base {
