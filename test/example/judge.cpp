@@ -3,9 +3,9 @@
 void judge(fstream& fin, fstream& fsol, FormatJudge& fout) {
   cout << fin.rdbuf() << flush;
 
-  int sol;
+  long long int sol;
   fsol >> sol;
-  int ans;
+  long long int ans;
   fout >> ans << '\n';
   cerr << "Expected " << sol << ", got " << ans << endl;
   if (ans != sol) {

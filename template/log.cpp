@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef CP_DEBUG
+#define LOG(x)
+#else
+
 #include <cxxabi.h>
 
 // LOG logs x into stderr
@@ -134,3 +138,4 @@ std::ostream& operator<< (std::ostream& os, const std::vector<T...>& c) {
   return cp_log::logContainer(os, c);
 }
 
+#endif

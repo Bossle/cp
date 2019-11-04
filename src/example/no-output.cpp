@@ -1,11 +1,11 @@
 #include "base.cpp"
+#include "log.cpp"
+
+typedef long long int lli;
 
 int main() {
-  int a, b;
+  lli a, b;
   cin >> a >> b;
   LOG(a); LOG(b);
-  int ans = a+b;
-  LOG(ans);
-  cout << ans << endl;
 }
 

@@ -1,15 +1,16 @@
-.PHONY : all clean judge
-all : judge
+.PHONY : all clean judge-all
+all : judge-all
 
 include scripts/base.mk
 include scripts/cpp.mk
 
 clean :
-	$(RM) -r bin build dist log
+	$(RM) -r bin build dist log judge
 
-judge : $(patsubst src/%.cpp,log/%/success,$(shell find src -name *.cpp))
+# TODO: make this work with weird filenames
+judge-all : $(patsubst src/%.cpp,judge/%,$(shell find src -name *.cpp))
 	echo 'Finished judging'
 
-log/%/success : scripts/run_judge.sh bin/src/%_debug bin/src/% bin/test/$$(*D)/judge_debug test/$$(*D)/*.in test/$$(*D)/*.sol
-	$< $(*D) $(*F)
+judge/% : scripts/run_judge.sh bin/src/%_debug bin/src/% bin/test/$$(*D)/judge_debug test/$$(*D)/*.in test/$$(*D)/*.sol | $(parentDirs)
+	$< $(*D) $(*F) $@
 

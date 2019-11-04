@@ -1,21 +1,17 @@
 #pragma once
 
 #include <bits/stdc++.h>
-// INCLUDE BITS HERE
+// END OF STD HEADERS
 using namespace std;
 
-#ifdef CP_DEBUG
+// This code uses the bossle/cp library
+// Available at https://github.com/bossle/cp
 
-#include "log.cpp"
-
-#else
-
-#define LOG(...)
-#pragma STDC FENV_ACCESS OFF
-#pragma STDC FP_CONTRACT ON
-#pragma STDC CX_LIMITED_RANGE ON
-#pragma GCC optimize O3
-
+#ifndef CP_DEBUG
+// #pragma STDC FENV_ACCESS OFF
+// #pragma STDC FP_CONTRACT ON
+// #pragma STDC CX_LIMITED_RANGE ON
+#pragma GCC optimize "O3"
 #endif
 
 namespace cp_base {
