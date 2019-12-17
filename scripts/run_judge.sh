@@ -28,16 +28,17 @@ judge() {
   problem="$1"
   attempt="$2"
   test_case="$3"
-  echo "Testing $problem/$attempt against $test_case:" >&2
+  echo >&2
+  echo -n "Testing $problem/$attempt against $test_case:" >&2
   mkdir -p "log/$problem/$attempt"
   touch "log/$problem/$attempt/$test_case.in"
   touch "log/$problem/$attempt/$test_case.out"
-  coproc timeout -s KILL 1 "bin/src/$problem/$attempt" \
+  coproc timeout -s KILL ${CP_TIMEOUT:-1} "bin/src/$problem/$attempt" \
     < <(tee "log/$problem/$attempt/$test_case.in") \
     > >(tee "log/$problem/$attempt/$test_case.out") \
     2> "log/$problem/$attempt/$test_case.log"
   coproc_pid=$COPROC_PID
-  "bin/test/$problem/judge_debug" "test/$problem/$test_case.in" "test/$problem/$test_case.sol" \
+  time "bin/test/$problem/judge_debug" "test/$problem/$test_case.in" "test/$problem/$test_case.sol" \
     <&${COPROC[0]} >&${COPROC[1]} \
     2> "log/$problem/$attempt/${test_case}_judge.log"
   judge_ret=$?
@@ -80,6 +81,7 @@ for test_case in $(basename -s .in $(find "test/$1/" -name *.in ) ); do
   esac
 done
 
+echo
 echo "Finished judging $1/$2:"
 if [[ $total = 0 ]]; then
   echo "No test cases"
