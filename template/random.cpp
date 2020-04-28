@@ -5,9 +5,9 @@ namespace cp_random {
 #ifdef BOSSLE_DEBUG
   const auto seed = 0;
 #else
-  const auto seed = seed_seq{
+  seed_seq seed{
     chrono::steady_clock::now().time_since_epoch().count(),
-    random_device()(),
+    (long int)random_device()()
   };
 #endif
 

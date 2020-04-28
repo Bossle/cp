@@ -23,3 +23,5 @@ auto init = (
 
 }  // namespace cp_base
 
+typedef long long int lli;
+

@@ -2,6 +2,12 @@
 
 ## C++ code meant for competitive programming
 
+### Basic setup
+
+- Clone this repo
+- Run scripts/create.sh
+
+
 ### What you can find here
 
 - `template/` contains my personal library of code for CP

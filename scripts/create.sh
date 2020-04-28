@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ $# != 1 ]]; then
+  echo "Usage: $0 problem-name"
+  exit 1
+fi
+
 mkdir "src/$1"
 cp src/example/ac.cpp "src/$1/main.cpp"
 gedit "src/$1/main.cpp"
