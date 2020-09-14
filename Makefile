@@ -1,9 +1,10 @@
 .PHONY : all clean judge-all dist-all
 all : judge-all dist-all
+include scripts/base.mk
 
 # TODO: make the $(shell find)s work with weird filenames
 
-include $(shell find scripts -name *.mk)
+include scripts/cpp.mk
 
 clean :
 	$(RM) -r bin build dist log judge

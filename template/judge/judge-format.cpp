@@ -33,7 +33,7 @@ class FormatJudge {
   void printGot(ostream& os);
   bool isSpace(int c);
 
-  bool hasPE; stringstream pe;
+  bool hasPE = false; stringstream pe;
   int line = 1, nextLine = 1;
   int col = 1, nextCol = 1;
 };
